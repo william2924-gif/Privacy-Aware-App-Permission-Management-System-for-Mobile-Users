@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PrivacyAwarePermissionSystem</string>
+    <string name="welcome_message">Privacy-Aware App Permission Management System</string>
+</resources>
