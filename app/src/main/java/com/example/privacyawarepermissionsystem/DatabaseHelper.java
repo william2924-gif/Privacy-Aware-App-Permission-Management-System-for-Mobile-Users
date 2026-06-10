@@ -6,21 +6,33 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "privacy.db";
-    private static final int DB_VERSION = 1;
+    private static final String DATABASE_NAME = "privacy_permission.db";
+    private static final int DATABASE_VERSION = 1;
+
+    public static final String TABLE_APPS = "apps";
 
     public DatabaseHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE apps (id INTEGER PRIMARY KEY, appName TEXT)");
+        String createAppsTable = "CREATE TABLE " + TABLE_APPS + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "app_name TEXT, " +
+                "package_name TEXT, " +
+                "permissions TEXT, " +
+                "permission_count INTEGER, " +
+                "risk_level TEXT, " +
+                "scan_time TEXT" +
+                ")";
+
+        db.execSQL(createAppsTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS apps");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_APPS);
         onCreate(db);
     }
 }

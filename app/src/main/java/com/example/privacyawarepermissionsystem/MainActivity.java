@@ -1,24 +1,44 @@
 package com.example.privacyawarepermissionsystem;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TextView txtResults;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        databaseHelper = new DatabaseHelper(this);
+
+        Button btnScan = findViewById(R.id.btnScan);
+        txtResults = findViewById(R.id.txtResults);
+
+        btnScan.setOnClickListener(v -> scanApps());
+    }
+
+    private void scanApps() {
+        AppScanner scanner = new AppScanner(this);
+        List<String> apps = scanner.scanInstalledApps();
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("Total apps scanned: ").append(apps.size()).append("\n\n");
+
+        int limit = Math.min(apps.size(), 20);
+
+        for (int i = 0; i < limit; i++) {
+            builder.append(apps.get(i)).append("\n");
+        }
+
+        txtResults.setText(builder.toString());
     }
 }
