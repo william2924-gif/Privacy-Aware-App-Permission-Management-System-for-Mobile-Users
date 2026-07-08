@@ -11,34 +11,83 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtResults;
+
     private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        txtResults = findViewById(R.id.txtResults);
+
+        Button btnScan = findViewById(R.id.btnScan);
 
         databaseHelper = new DatabaseHelper(this);
 
-        Button btnScan = findViewById(R.id.btnScan);
-        txtResults = findViewById(R.id.txtResults);
+        btnScan.setOnClickListener(view -> scanInstalledApplications());
 
-        btnScan.setOnClickListener(v -> scanApps());
     }
 
-    private void scanApps() {
+    /**
+     * Scan all installed applications.
+     * Save every application into SQLite.
+     * Display scan results.
+     */
+    private void scanInstalledApplications() {
+
         AppScanner scanner = new AppScanner(this);
-        List<String> apps = scanner.scanInstalledApps();
+
+        List<AppInfo> applications = scanner.scanInstalledApps();
+
+        databaseHelper.clearDatabase();
 
         StringBuilder builder = new StringBuilder();
-        builder.append("Total apps scanned: ").append(apps.size()).append("\n\n");
 
-        int limit = Math.min(apps.size(), 20);
+        builder.append("Privacy-Aware App Permission Management System\n\n");
 
-        for (int i = 0; i < limit; i++) {
-            builder.append(apps.get(i)).append("\n");
+        builder.append("Total Applications: ")
+                .append(applications.size())
+                .append("\n\n");
+
+        int displayLimit = Math.min(applications.size(), 20);
+
+        for (int i = 0; i < applications.size(); i++) {
+
+            AppInfo app = applications.get(i);
+
+            databaseHelper.insertApp(app);
+
+            if (i < displayLimit) {
+
+                builder.append("Application Name: ")
+                        .append(app.getAppName())
+                        .append("\n");
+
+                builder.append("Package Name: ")
+                        .append(app.getPackageName())
+                        .append("\n");
+
+                builder.append("Permission Count: ")
+                        .append(app.getPermissionCount())
+                        .append("\n");
+
+                builder.append("Risk Level: ")
+                        .append(app.getRiskLevel())
+                        .append("\n");
+
+                builder.append("----------------------------------------\n\n");
+
+            }
+
         }
 
+        builder.append("Database Updated Successfully.");
+
         txtResults.setText(builder.toString());
+
     }
+
 }
