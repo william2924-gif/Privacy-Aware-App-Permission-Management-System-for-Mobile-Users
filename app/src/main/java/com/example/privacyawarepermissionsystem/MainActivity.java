@@ -1,6 +1,7 @@
 package com.example.privacyawarepermissionsystem;
 
 import android.os.Bundle;
+import android.content.Intent;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,9 +26,35 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnScan = findViewById(R.id.btnScan);
 
+        Button btnHistory = findViewById(R.id.btnHistory);
+
+        Button btnDashboard = findViewById(R.id.btnDashboard);
+
         databaseHelper = new DatabaseHelper(this);
 
         btnScan.setOnClickListener(view -> scanInstalledApplications());
+
+        btnHistory.setOnClickListener(view -> {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    HistoryActivity.class
+            );
+
+            startActivity(intent);
+
+        });
+
+        btnDashboard.setOnClickListener(view -> {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    DashboardActivity.class
+            );
+
+            startActivity(intent);
+
+        });
 
     }
 

@@ -148,4 +148,116 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Returns the number of high-risk applications.
+     */
+    public int getHighRiskCount() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_APPS +
+                        " WHERE " + COLUMN_RISK_LEVEL + " = ?",
+                new String[]{"High"}
+        );
+
+        int count = 0;
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return count;
+    }
+
+    /**
+     * Returns the number of medium-risk applications.
+     */
+    public int getMediumRiskCount() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_APPS +
+                        " WHERE " + COLUMN_RISK_LEVEL + " = ?",
+                new String[]{"Medium"}
+        );
+
+        int count = 0;
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return count;
+    }
+
+    /**
+     * Returns the number of low-risk applications.
+     */
+    public int getLowRiskCount() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_APPS +
+                        " WHERE " + COLUMN_RISK_LEVEL + " = ?",
+                new String[]{"Low"}
+        );
+
+        int count = 0;
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return count;
+    }
+
+    /**
+     * Determines the overall privacy status.
+     */
+    public String getOverallStatus() {
+
+        int high = getHighRiskCount();
+        int medium = getMediumRiskCount();
+
+        if (high >= 10) {
+            return "High";
+        } else if (medium >= 10) {
+            return "Medium";
+        } else {
+            return "Low";
+        }
+    }
+
+    /**
+     * Generates a privacy recommendation.
+     */
+    public String getRecommendation() {
+
+        String status = getOverallStatus();
+
+        switch (status) {
+
+            case "High":
+                return "Several applications request sensitive permissions. Review High Risk apps and disable unnecessary permissions.";
+
+            case "Medium":
+                return "Some applications request sensitive permissions. Check permission settings regularly.";
+
+            default:
+                return "Your device currently has a relatively low privacy risk. Continue reviewing permissions before installing new apps.";
+        }
+    }
+
 }
