@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.content.Intent;
 
 import java.util.List;
 
@@ -31,8 +32,24 @@ public class HistoryActivity extends AppCompatActivity {
         List<AppInfo> appList =
                 databaseHelper.getAllApps();
 
-        HistoryAdapter adapter =
-                new HistoryAdapter(appList);
+        HistoryAdapter adapter = new HistoryAdapter(
+
+                appList,
+
+                app -> {
+
+                    Intent intent = new Intent(
+                            HistoryActivity.this,
+                            DetailActivity.class
+                    );
+
+                    intent.putExtra("selectedApp", app);
+
+                    startActivity(intent);
+
+                }
+
+        );
 
         recyclerView.setAdapter(adapter);
 

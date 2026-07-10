@@ -18,8 +18,21 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     private final List<AppInfo> appList;
 
-    public HistoryAdapter(List<AppInfo> appList) {
+    /**
+     * Listener used to handle item click events.
+     */
+    public interface OnItemClickListener {
+        void onItemClick(AppInfo app);
+    }
+
+    private final OnItemClickListener listener;
+
+    public HistoryAdapter(List<AppInfo> appList,
+                          OnItemClickListener listener) {
+
         this.appList = appList;
+        this.listener = listener;
+
     }
 
     /**
@@ -50,6 +63,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         holder.txtPermissionCount.setText(
                 "Permissions: " + app.getPermissionCount());
+
+        holder.itemView.setOnClickListener(view -> {
+
+            listener.onItemClick(app);
+
+        });
 
     }
 

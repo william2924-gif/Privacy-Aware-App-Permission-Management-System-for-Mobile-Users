@@ -9,9 +9,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private TextView txtAppName;
     private TextView txtPackageName;
-    private TextView txtPermissionCount;
     private TextView txtRiskLevel;
+    private TextView txtPermissionCount;
     private TextView txtPermissions;
+    private TextView txtRecommendation;
     private TextView txtScanTime;
 
     @Override
@@ -23,45 +24,108 @@ public class DetailActivity extends AppCompatActivity {
 
         txtAppName = findViewById(R.id.txtAppName);
         txtPackageName = findViewById(R.id.txtPackageName);
-        txtPermissionCount = findViewById(R.id.txtPermissionCount);
         txtRiskLevel = findViewById(R.id.txtRiskLevel);
+        txtPermissionCount = findViewById(R.id.txtPermissionCount);
         txtPermissions = findViewById(R.id.txtPermissions);
+        txtRecommendation = findViewById(R.id.txtRecommendation);
         txtScanTime = findViewById(R.id.txtScanTime);
 
-        String appName =
-                getIntent().getStringExtra("appName");
+        AppInfo app =
+                (AppInfo) getIntent().getSerializableExtra("selectedApp");
 
-        String packageName =
-                getIntent().getStringExtra("packageName");
+        if (app != null) {
 
-        int permissionCount =
-                getIntent().getIntExtra("permissionCount",0);
+            txtAppName.setText(app.getAppName());
 
-        String riskLevel =
-                getIntent().getStringExtra("riskLevel");
+            txtPackageName.setText(app.getPackageName());
 
-        String permissions =
-                getIntent().getStringExtra("permissions");
+            txtRiskLevel.setText(app.getRiskLevel());
 
-        String scanTime =
-                getIntent().getStringExtra("scanTime");
+            txtPermissionCount.setText(
+                    String.valueOf(app.getPermissionCount())
+            );
 
-        txtAppName.setText(appName);
+            txtPermissions.setText(
+                    formatPermissions(app.getPermissions())
+            );
 
-        txtPackageName.setText(
-                "Package Name\n\n" + packageName);
+            txtRecommendation.setText(
+                    generateRecommendation(app.getPermissions())
+            );
 
-        txtPermissionCount.setText(
-                "Permission Count\n\n" + permissionCount);
+            txtScanTime.setText(app.getScanTime());
 
-        txtRiskLevel.setText(
-                "Risk Level\n\n" + riskLevel);
+        }
 
-        txtPermissions.setText(
-                "Permissions\n\n" + permissions);
+    }
 
-        txtScanTime.setText(
-                "Scan Time\n\n" + scanTime);
+    /**
+     * Format permission list.
+     */
+    private String formatPermissions(String permissions) {
+
+        if (permissions == null || permissions.isEmpty()) {
+
+            return "No permissions requested.";
+
+        }
+
+        return permissions.replace(",", "\n");
+
+    }
+
+    /**
+     * Generate privacy recommendation.
+     */
+    private String generateRecommendation(String permissions) {
+
+        StringBuilder recommendation = new StringBuilder();
+
+        if (permissions.contains("CAMERA")) {
+
+            recommendation.append("• Disable Camera permission if unnecessary.\n\n");
+
+        }
+
+        if (permissions.contains("LOCATION")) {
+
+            recommendation.append("• Allow Location only while using the app.\n\n");
+
+        }
+
+        if (permissions.contains("CONTACTS")) {
+
+            recommendation.append("• Review Contacts permission carefully.\n\n");
+
+        }
+
+        if (permissions.contains("SMS")) {
+
+            recommendation.append("• SMS permission may access personal messages.\n\n");
+
+        }
+
+        if (permissions.contains("RECORD_AUDIO")) {
+
+            recommendation.append("• Disable Microphone permission unless required.\n\n");
+
+        }
+
+        if (permissions.contains("PHONE")) {
+
+            recommendation.append("• Review Phone permission before granting access.\n\n");
+
+        }
+
+        if (recommendation.length() == 0) {
+
+            recommendation.append(
+                    "This application requests only low-risk permissions."
+            );
+
+        }
+
+        return recommendation.toString();
 
     }
 

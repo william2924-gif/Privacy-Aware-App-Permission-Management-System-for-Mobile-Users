@@ -1,5 +1,6 @@
 package com.example.privacyawarepermissionsystem;
 
+import java.io.Serializable;
 public class AppInfo {
 
     private String appName;
@@ -9,7 +10,7 @@ public class AppInfo {
     private String riskLevel;
     private String scanTime;
 
-    public AppInfo(String appName,
+    public AppInfo implements Serializable (String appName,
                    String packageName,
                    String permissions,
                    int permissionCount,
