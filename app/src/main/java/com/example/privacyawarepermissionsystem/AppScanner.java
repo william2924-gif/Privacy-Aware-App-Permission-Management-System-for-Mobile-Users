@@ -71,8 +71,15 @@ public class AppScanner {
 
             }
 
+            int privacyScore =
+                    PrivacyRiskAnalyzer.calculatePrivacyScore(
+                            permissionText
+                    );
+
             String riskLevel =
-                    getRiskLevel(permissions);
+                    PrivacyRiskAnalyzer.calculateRiskLevel(
+                            privacyScore
+                    );
 
             String scanTime =
                     new SimpleDateFormat(
@@ -89,6 +96,8 @@ public class AppScanner {
                     permissionText,
 
                     permissionCount,
+
+                    privacyScore,
 
                     riskLevel,
 
@@ -138,40 +147,6 @@ public class AppScanner {
             return new String[0];
 
         }
-
-    }
-
-    private String getRiskLevel(String[] permissions) {
-
-        if (permissions == null)
-            return "Low";
-
-        int highRisk = 0;
-
-        for (String permission : permissions) {
-
-            if (permission.contains("CAMERA")
-                    || permission.contains("LOCATION")
-                    || permission.contains("CONTACTS")
-                    || permission.contains("SMS")
-                    || permission.contains("PHONE")
-                    || permission.contains("RECORD_AUDIO")) {
-
-                highRisk++;
-
-            }
-
-        }
-
-        if (highRisk >= 3)
-
-            return "High";
-
-        if (highRisk >= 1)
-
-            return "Medium";
-
-        return "Low";
 
     }
 

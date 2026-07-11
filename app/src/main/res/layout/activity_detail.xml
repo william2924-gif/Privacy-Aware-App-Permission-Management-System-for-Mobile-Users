@@ -11,6 +11,21 @@
         android:padding="20dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy Report"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:paddingBottom="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Application Name"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
             android:id="@+id/txtAppName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,6 +35,13 @@
             android:paddingBottom="20dp"/>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Package Name"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
             android:id="@+id/txtPackageName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,11 +49,25 @@
             android:paddingBottom="20dp"/>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sensitive Permission Count"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
             android:id="@+id/txtPermissionCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:paddingBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Risk Level"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/txtRiskLevel"
@@ -43,11 +79,67 @@
             android:paddingBottom="20dp"/>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy Score"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/txtPrivacyScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="100 / 100"
+            android:textStyle="bold"
+            android:textSize="26sp"
+            android:paddingBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Permission List"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
             android:id="@+id/txtPermissions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:paddingBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy Summary"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/txtPrivacySummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy Recommendation"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/txtRecommendation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Scan Time"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/txtScanTime"

@@ -10,24 +10,29 @@
         android:id="@+id/txtAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Application Name"
+        android:text="Application"
         android:textStyle="bold"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/txtPrivacyScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Privacy Score: 100 / 100"
+        android:paddingTop="4dp"/>
 
     <TextView
         android:id="@+id/txtRisk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Risk Level"
-        android:layout_marginTop="6dp"
-        android:textSize="15sp" />
+        android:text="Risk Level: Low"
+        android:paddingTop="2dp"/>
 
     <TextView
         android:id="@+id/txtPermissionCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Permission Count"
-        android:layout_marginTop="4dp"
-        android:textSize="15sp" />
+        android:text="Sensitive Permissions: 0"
+        android:paddingTop="2dp"/>
 
 </LinearLayout>

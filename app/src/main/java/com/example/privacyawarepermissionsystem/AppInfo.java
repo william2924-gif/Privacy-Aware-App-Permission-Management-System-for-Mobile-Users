@@ -1,26 +1,34 @@
 package com.example.privacyawarepermissionsystem;
 
 import java.io.Serializable;
-public class AppInfo {
+
+/**
+ * AppInfo stores all information about one scanned application.
+ */
+public class AppInfo implements Serializable {
 
     private String appName;
     private String packageName;
     private String permissions;
     private int permissionCount;
+    private int privacyScore;
     private String riskLevel;
     private String scanTime;
 
-    public AppInfo implements Serializable (String appName,
-                   String packageName,
-                   String permissions,
-                   int permissionCount,
-                   String riskLevel,
-                   String scanTime) {
+    public AppInfo(
+            String appName,
+            String packageName,
+            String permissions,
+            int permissionCount,
+            int privacyScore,
+            String riskLevel,
+            String scanTime) {
 
         this.appName = appName;
         this.packageName = packageName;
         this.permissions = permissions;
         this.permissionCount = permissionCount;
+        this.privacyScore = privacyScore;
         this.riskLevel = riskLevel;
         this.scanTime = scanTime;
     }
@@ -41,6 +49,10 @@ public class AppInfo {
         return permissionCount;
     }
 
+    public int getPrivacyScore() {
+        return privacyScore;
+    }
+
     public String getRiskLevel() {
         return riskLevel;
     }
@@ -48,4 +60,5 @@ public class AppInfo {
     public String getScanTime() {
         return scanTime;
     }
+
 }

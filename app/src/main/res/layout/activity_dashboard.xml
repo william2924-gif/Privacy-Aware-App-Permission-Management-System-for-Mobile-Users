@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,13 +18,13 @@
             android:text="Privacy Dashboard"
             android:textStyle="bold"
             android:textSize="28sp"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="24dp"/>
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="6dp">
 
             <LinearLayout
@@ -43,19 +44,19 @@
                     android:id="@+id/txtTotalApps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:textSize="30sp"
                     android:textStyle="bold"
-                    android:textSize="36sp"/>
+                    android:paddingTop="8dp"/>
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="6dp">
 
             <LinearLayout
@@ -65,119 +66,121 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="High Risk Applications"
+                    android:text="Average Privacy Score"
                     android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/txtHighRisk"
+                    android:id="@+id/txtAverageScore"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textStyle="bold"
-                    android:textSize="36sp"/>
+                    android:paddingTop="8dp"/>
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Medium Risk Applications"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/txtMediumRisk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textStyle="bold"
-                    android:textSize="36sp"/>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Low Risk Applications"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/txtLowRisk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textStyle="bold"
-                    android:textSize="36sp"/>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <TextView
+            android:text="High Risk Applications"
+            android:textStyle="bold"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtHighRisk"
+            android:textSize="22sp"
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Medium Risk Applications"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtMediumRisk"
+            android:textSize="22sp"
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Low Risk Applications"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtLowRisk"
+            android:textSize="22sp"
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Highest Privacy Score App"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtHighestApp"
+            android:textSize="18sp"
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Lowest Privacy Score App"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtLowestApp"
+            android:textSize="18sp"
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:text="Overall Privacy Status"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:paddingTop="8dp"/>
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/txtOverallStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medium"
-            android:textSize="26sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="Recommendation"
             android:textStyle="bold"
-            android:textSize="20sp"/>
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/txtRecommendation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Recommendation"
             android:textSize="16sp"
-            android:paddingTop="8dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

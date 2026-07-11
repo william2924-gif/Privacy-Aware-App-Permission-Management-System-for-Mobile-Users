@@ -59,10 +59,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         holder.txtAppName.setText(app.getAppName());
 
-        holder.txtRisk.setText("Risk: " + app.getRiskLevel());
+        holder.txtPrivacyScore.setText(
+                "Privacy Score: " + app.getPrivacyScore() + " / 100");
+
+        holder.txtRisk.setText(
+                "Risk Level: " + app.getRiskLevel());
 
         holder.txtPermissionCount.setText(
-                "Permissions: " + app.getPermissionCount());
+                "Sensitive Permissions: " +
+                        PrivacyRiskAnalyzer.countSensitivePermissions(app.getPermissions()));
 
         holder.itemView.setOnClickListener(view -> {
 
@@ -84,6 +89,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtAppName;
+        TextView txtPrivacyScore;
         TextView txtRisk;
         TextView txtPermissionCount;
 
@@ -92,6 +98,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             super(itemView);
 
             txtAppName = itemView.findViewById(R.id.txtAppName);
+
+            txtPrivacyScore = itemView.findViewById(R.id.txtPrivacyScore);
 
             txtRisk = itemView.findViewById(R.id.txtRisk);
 

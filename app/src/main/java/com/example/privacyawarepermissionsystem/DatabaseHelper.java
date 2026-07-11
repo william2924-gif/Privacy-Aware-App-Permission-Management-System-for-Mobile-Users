@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "privacy_permission.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_APPS = "apps";
 
@@ -21,8 +21,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PACKAGE_NAME = "package_name";
     public static final String COLUMN_PERMISSIONS = "permissions";
     public static final String COLUMN_PERMISSION_COUNT = "permission_count";
+    public static final String COLUMN_PRIVACY_SCORE = "privacy_score";
     public static final String COLUMN_RISK_LEVEL = "risk_level";
     public static final String COLUMN_SCAN_TIME = "scan_time";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_PACKAGE_NAME + " TEXT, " +
                         COLUMN_PERMISSIONS + " TEXT, " +
                         COLUMN_PERMISSION_COUNT + " INTEGER, " +
+                        COLUMN_PRIVACY_SCORE + " INTEGER, " +
                         COLUMN_RISK_LEVEL + " TEXT, " +
                         COLUMN_SCAN_TIME + " TEXT" +
                         ");";
@@ -64,6 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PACKAGE_NAME, app.getPackageName());
         values.put(COLUMN_PERMISSIONS, app.getPermissions());
         values.put(COLUMN_PERMISSION_COUNT, app.getPermissionCount());
+        values.put(COLUMN_PRIVACY_SCORE, app.getPrivacyScore());
         values.put(COLUMN_RISK_LEVEL, app.getRiskLevel());
         values.put(COLUMN_SCAN_TIME, app.getScanTime());
 
@@ -91,14 +95,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
 
                 AppInfo app = new AppInfo(
-
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getInt(4),
-                        cursor.getString(5),
-                        cursor.getString(6)
-
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APP_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PACKAGE_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PERMISSIONS)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PERMISSION_COUNT)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRIVACY_SCORE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RISK_LEVEL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SCAN_TIME))
                 );
 
                 appList.add(app);
@@ -258,6 +261,86 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             default:
                 return "Your device currently has a relatively low privacy risk. Continue reviewing permissions before installing new apps.";
         }
+    }
+
+    /**
+     * Returns the average privacy score.
+     */
+    public int getAveragePrivacyScore() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT AVG(" + COLUMN_PRIVACY_SCORE + ") FROM " + TABLE_APPS,
+                null
+        );
+
+        int average = 0;
+
+        if (cursor.moveToFirst()) {
+            average = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return average;
+    }
+
+    /**
+     * Returns the application with the highest privacy score.
+     */
+    public String getHighestPrivacyScoreApp() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COLUMN_APP_NAME +
+                        " FROM " + TABLE_APPS +
+                        " ORDER BY " + COLUMN_PRIVACY_SCORE +
+                        " DESC LIMIT 1",
+                null
+        );
+
+        String app = "N/A";
+
+        if (cursor.moveToFirst()) {
+            app = cursor.getString(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return app;
+
+    }
+
+    /**
+     * Returns the application with the lowest privacy score.
+     */
+    public String getLowestPrivacyScoreApp() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COLUMN_APP_NAME +
+                        " FROM " + TABLE_APPS +
+                        " ORDER BY " + COLUMN_PRIVACY_SCORE +
+                        " ASC LIMIT 1",
+                null
+        );
+
+        String app = "N/A";
+
+        if (cursor.moveToFirst()) {
+            app = cursor.getString(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return app;
+
     }
 
 }
