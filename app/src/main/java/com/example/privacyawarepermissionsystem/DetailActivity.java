@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -16,12 +19,11 @@ public class DetailActivity extends AppCompatActivity {
     private TextView txtPrivacySummary;
     private TextView txtRecommendation;
     private TextView txtScanTime;
+    private LinearProgressIndicator progressPrivacy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_detail);
 
         txtAppName = findViewById(R.id.txtAppName);
@@ -33,155 +35,117 @@ public class DetailActivity extends AppCompatActivity {
         txtPrivacySummary = findViewById(R.id.txtPrivacySummary);
         txtRecommendation = findViewById(R.id.txtRecommendation);
         txtScanTime = findViewById(R.id.txtScanTime);
+        progressPrivacy = findViewById(R.id.progressPrivacy);
 
-        AppInfo app =
-                (AppInfo) getIntent().getSerializableExtra("selectedApp");
+        AppInfo app = (AppInfo) getIntent().getSerializableExtra("selectedApp");
 
         if (app != null) {
-
             txtAppName.setText(app.getAppName());
-
             txtPackageName.setText(app.getPackageName());
-
-            String level = app.getRiskLevel();
-
-            if (level.equalsIgnoreCase("High")) {
-                txtRiskLevel.setText("🟥 HIGH");
-            }
-            else if (level.equalsIgnoreCase("Medium")) {
-                txtRiskLevel.setText("🟧 MEDIUM");
-            }
-            else {
-                txtRiskLevel.setText("🟩 LOW");
-            }
-
             txtPrivacyScore.setText(app.getPrivacyScore() + " / 100");
+            progressPrivacy.setProgressCompat(app.getPrivacyScore(), false);
+
+            applyRiskStyle(app.getRiskLevel());
 
             txtPrivacySummary.setText(
-                    PrivacyRiskAnalyzer.generateSummary(
-                            app.getPrivacyScore()
-                    )
-            );
+                    PrivacyRiskAnalyzer.generateSummary(app.getPrivacyScore()));
 
-            txtPermissionCount.setText(
-                    String.valueOf(
-                            PrivacyRiskAnalyzer.countSensitivePermissions(
-                                    app.getPermissions()
-                            )
-                    )
-            );
+            txtPermissionCount.setText(String.valueOf(
+                    PrivacyRiskAnalyzer.countSensitivePermissions(app.getPermissions())));
 
-            txtPermissions.setText(
-                    formatPermissions(app.getPermissions())
-            );
-
-            txtRecommendation.setText(
-                    generateRecommendation(app)
-            );
-
+            txtPermissions.setText(formatPermissions(app.getPermissions()));
+            txtRecommendation.setText(generateRecommendation(app));
             txtScanTime.setText(app.getScanTime());
-
         }
-
     }
 
-    /**
-     * Format permission list.
-     */
-    private String formatPermissions(String permissions) {
+    private void applyRiskStyle(String level) {
+        txtRiskLevel.setText(level.toUpperCase());
 
-        if (permissions == null || permissions.isEmpty()) {
+        if ("High".equalsIgnoreCase(level)) {
+            txtRiskLevel.setBackgroundResource(R.drawable.bg_risk_high);
+            txtRiskLevel.setTextColor(ContextCompat.getColor(this, R.color.risk_high));
+            progressPrivacy.setIndicatorColor(
+                    ContextCompat.getColor(this, R.color.risk_high));
+        } else if ("Medium".equalsIgnoreCase(level)) {
+            txtRiskLevel.setBackgroundResource(R.drawable.bg_risk_medium);
+            txtRiskLevel.setTextColor(ContextCompat.getColor(this, R.color.risk_medium));
+            progressPrivacy.setIndicatorColor(
+                    ContextCompat.getColor(this, R.color.risk_medium));
+        } else {
+            txtRiskLevel.setBackgroundResource(R.drawable.bg_risk_low);
+            txtRiskLevel.setTextColor(ContextCompat.getColor(this, R.color.risk_low));
+            progressPrivacy.setIndicatorColor(
+                    ContextCompat.getColor(this, R.color.risk_low));
+        }
+    }
+
+    private String formatPermissions(String permissions) {
+        if (permissions == null || permissions.trim().isEmpty()) {
             return "No permissions requested.";
         }
 
-        String result = permissions;
+        String[] permissionLines = permissions.split("\n");
+        StringBuilder result = new StringBuilder();
 
-        result = result.replace("android.permission.", "");
+        for (String permission : permissionLines) {
+            if (permission.trim().isEmpty()) {
+                continue;
+            }
 
-        result = result.replace("ACCESS_FINE_LOCATION", "Location");
+            String readable = permission.replace("android.permission.", "")
+                    .replace("ACCESS_FINE_LOCATION", "Precise location")
+                    .replace("ACCESS_COARSE_LOCATION", "Approximate location")
+                    .replace("READ_CONTACTS", "Read contacts")
+                    .replace("WRITE_CONTACTS", "Modify contacts")
+                    .replace("CAMERA", "Camera")
+                    .replace("RECORD_AUDIO", "Microphone")
+                    .replace("READ_SMS", "Read SMS")
+                    .replace("SEND_SMS", "Send SMS")
+                    .replace("CALL_PHONE", "Phone calls")
+                    .replace("_", " ");
 
-        result = result.replace("ACCESS_COARSE_LOCATION", "Location");
-
-        result = result.replace("READ_CONTACTS", "Contacts");
-
-        result = result.replace("WRITE_CONTACTS", "Contacts");
-
-        result = result.replace("CAMERA", "Camera");
-
-        result = result.replace("RECORD_AUDIO", "Microphone");
-
-        result = result.replace("READ_SMS", "SMS");
-
-        result = result.replace("SEND_SMS", "SMS");
-
-        result = result.replace("CALL_PHONE", "Phone");
-
-        result = "• " + result.replace("\n", "\n• ");
-
-        return result;
-
-    }
-
-    /**
-     * Generate privacy recommendation.
-     */
-    private String generateRecommendation(AppInfo app) {
-
-        String permissions = app.getPermissions();
-
-        if (permissions == null) {
-            permissions = "";
+            result.append("• ").append(readable).append("\n");
         }
 
-        int privacyScore = app.getPrivacyScore();
+        return result.toString().trim();
+    }
 
+    private String generateRecommendation(AppInfo app) {
+        String permissions = app.getPermissions() == null ? "" : app.getPermissions();
         StringBuilder builder = new StringBuilder();
 
         if (permissions.contains("CAMERA")) {
-            builder.append("• Disable Camera permission if it is not required.\n\n");
+            builder.append("• Disable Camera access when it is not required.\n\n");
         }
-
         if (permissions.contains("LOCATION")) {
-            builder.append("• Allow Location only while using the application.\n\n");
+            builder.append("• Prefer “Allow only while using the app” for Location.\n\n");
         }
-
         if (permissions.contains("CONTACTS")) {
-            builder.append("• Review Contacts permission before granting access.\n\n");
+            builder.append("• Confirm that Contacts access is essential to the app’s purpose.\n\n");
         }
-
         if (permissions.contains("SMS")) {
-            builder.append("• SMS permission may expose personal messages.\n\n");
+            builder.append("• SMS access can expose personal messages and verification codes.\n\n");
         }
-
         if (permissions.contains("PHONE")) {
-            builder.append("• Phone permission should only be granted to trusted apps.\n\n");
+            builder.append("• Grant Phone access only to applications you trust.\n\n");
         }
-
         if (permissions.contains("RECORD_AUDIO")) {
-            builder.append("• Disable Microphone permission unless voice recording is needed.\n\n");
+            builder.append("• Disable Microphone access unless voice recording is needed.\n\n");
         }
 
         if (builder.length() == 0) {
-            builder.append("No significant privacy risks were detected.");
+            builder.append("No significant sensitive permissions were detected.\n\n");
         }
 
-        builder.append("\nOverall Recommendation\n\n");
-
-        if (privacyScore >= 80) {
-            builder.append(
-                    "This application presents a low privacy risk. Current permissions appear reasonable.");
-        }
-        else if (privacyScore >= 50) {
-            builder.append(
-                    "Review sensitive permissions and disable any permissions that are not necessary.");
-        }
-        else {
-            builder.append(
-                    "This application requests many sensitive permissions. Review all permissions carefully before continuing to use the application.");
+        if (app.getPrivacyScore() >= 80) {
+            builder.append("Overall: Low privacy risk. Continue reviewing permissions after app updates.");
+        } else if (app.getPrivacyScore() >= 50) {
+            builder.append("Overall: Review each sensitive permission and disable unnecessary access.");
+        } else {
+            builder.append("Overall: High attention required. Review all permissions before continuing to use this app.");
         }
 
         return builder.toString();
-
     }
-
 }

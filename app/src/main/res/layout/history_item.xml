@@ -1,38 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/privacy_surface"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/privacy_outline"
+    app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/txtAppName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Application"
-        android:textStyle="bold"
-        android:textSize="18sp"/>
+        android:orientation="vertical"
+        android:padding="18dp">
 
-    <TextView
-        android:id="@+id/txtPrivacyScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Privacy Score: 100 / 100"
-        android:paddingTop="4dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txtRisk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Risk Level: Low"
-        android:paddingTop="2dp"/>
+            <TextView
+                android:id="@+id/txtAppName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Application"
+                android:textColor="@color/privacy_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/txtPermissionCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sensitive Permissions: 0"
-        android:paddingTop="2dp"/>
+            <TextView
+                android:id="@+id/txtRisk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_neutral_chip"
+                android:text="LOW"
+                android:textColor="@color/privacy_text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtPrivacyScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Privacy Score: 100 / 100"
+            android:textColor="@color/privacy_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtPermissionCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Sensitive permissions: 0"
+            android:textColor="@color/privacy_text_secondary"
+            android:textSize="14sp"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

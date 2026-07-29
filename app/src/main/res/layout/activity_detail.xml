@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/privacy_background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,139 +17,217 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Privacy Report"
+            android:textColor="@color/privacy_text_primary"
             android:textSize="28sp"
-            android:textStyle="bold"
-            android:paddingBottom="24dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Application Name"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txtAppName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Application Name"
-            android:textStyle="bold"
-            android:textSize="26sp"
-            android:paddingBottom="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Package Name"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="21sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txtPackageName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:paddingBottom="20dp"/>
+            android:layout_marginTop="3dp"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:textColor="@color/privacy_text_secondary"
+            android:textSize="13sp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sensitive Permission Count"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/txtPermissionCount"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:paddingBottom="20dp"/>
+            android:layout_marginTop="18dp"
+            app:cardBackgroundColor="@color/privacy_surface"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/privacy_outline"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Privacy score"
+                            android:textColor="@color/privacy_text_secondary"
+                            android:textSize="13sp"/>
+
+                        <TextView
+                            android:id="@+id/txtPrivacyScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="100 / 100"
+                            android:textColor="@color/privacy_text_primary"
+                            android:textSize="30sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtRiskLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_neutral_chip"
+                        android:text="LOW"
+                        android:textColor="@color/privacy_text_secondary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressPrivacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="14dp"
+                    android:max="100"
+                    app:trackColor="@color/privacy_surface_variant"
+                    app:trackCornerRadius="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Sensitive permissions"
+                    android:textColor="@color/privacy_text_secondary"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/txtPermissionCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="0"
+                    android:textColor="@color/privacy_text_primary"
+                    android:textSize="21sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Risk Level"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:layout_marginTop="24dp"
+            android:text="Assessment"
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="19sp"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/txtRiskLevel"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#D32F2F"
-            android:paddingBottom="20dp"/>
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/privacy_surface"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/privacy_outline"
+            app:strokeWidth="1dp">
+
+            <TextView
+                android:id="@+id/txtPrivacySummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:textColor="@color/privacy_text_secondary"
+                android:textSize="15sp"
+                android:lineSpacingExtra="3dp"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Privacy Score"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:layout_marginTop="24dp"
+            android:text="Requested permissions"
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="19sp"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/txtPrivacyScore"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="100 / 100"
-            android:textStyle="bold"
-            android:textSize="26sp"
-            android:paddingBottom="16dp"/>
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/privacy_surface"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/privacy_outline"
+            app:strokeWidth="1dp">
+
+            <TextView
+                android:id="@+id/txtPermissions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:textColor="@color/privacy_text_secondary"
+                android:textSize="14sp"
+                android:lineSpacingExtra="3dp"
+                android:textIsSelectable="true"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Permission List"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:layout_marginTop="24dp"
+            android:text="Recommendations"
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="19sp"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/txtPermissions"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:paddingBottom="20dp"/>
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/privacy_primary_container"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:id="@+id/txtRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:textColor="@color/privacy_primary_dark"
+                android:textSize="15sp"
+                android:lineSpacingExtra="3dp"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Privacy Summary"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/txtPrivacySummary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Privacy Recommendation"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/txtRecommendation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Scan Time"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:layout_marginTop="20dp"
+            android:text="Last scan"
+            android:textColor="@color/privacy_text_secondary"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/txtScanTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"/>
-
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="14sp"/>
     </LinearLayout>
-
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

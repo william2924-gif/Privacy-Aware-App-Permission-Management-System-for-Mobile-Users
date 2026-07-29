@@ -1,53 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:background="@color/privacy_background"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/txtTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_message"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingBottom="16dp" />
-
-    <Button
-        android:id="@+id/btnScan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_button_text" />
-
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="View Scan History" />
-
-    <Button
-        android:id="@+id/btnDashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Privacy Dashboard"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="16dp">
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="28dp">
 
         <TextView
-            android:id="@+id/txtResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PRIVACY GUARD"
+            android:textColor="@color/privacy_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.12"/>
+
+        <TextView
+            android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/scan_instruction"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_message"
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
 
-    </ScrollView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Understand which installed apps request sensitive access and receive practical permission recommendations."
+            android:textColor="@color/privacy_text_secondary"
+            android:textSize="15sp"
+            android:lineSpacingExtra="3dp"/>
 
-</LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            app:cardBackgroundColor="@color/privacy_primary_container"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device privacy check"
+                    android:textColor="@color/privacy_primary_dark"
+                    android:textSize="19sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="The scan stays on this device. Results are stored locally in SQLite."
+                    android:textColor="@color/privacy_secondary"
+                    android:textSize="14sp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnScan"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/scan_button_text"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:cornerRadius="14dp"/>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressScan"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="14dp"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/privacy_primary"
+                    app:trackColor="@color/privacy_surface"/>
+
+                <TextView
+                    android:id="@+id/txtScanStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/scan_instruction"
+                    android:textColor="@color/privacy_secondary"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnHistory"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Scan History"
+                android:textAllCaps="false"
+                app:cornerRadius="14dp"/>
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="1dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDashboard"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Dashboard"
+                android:textAllCaps="false"
+                app:cornerRadius="14dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Latest scan"
+            android:textColor="@color/privacy_text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/privacy_surface"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/privacy_outline"
+            app:strokeWidth="1dp">
+
+            <TextView
+                android:id="@+id/txtResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="170dp"
+                android:padding="18dp"
+                android:text="@string/scan_instruction"
+                android:textColor="@color/privacy_text_secondary"
+                android:textSize="14sp"
+                android:lineSpacingExtra="3dp"
+                android:textIsSelectable="true"/>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

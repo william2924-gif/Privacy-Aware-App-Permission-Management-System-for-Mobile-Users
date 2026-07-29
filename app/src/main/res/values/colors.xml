@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="privacy_primary">#3157C8</color>
+    <color name="privacy_primary_dark">#213B8F</color>
+    <color name="privacy_primary_container">#E7ECFF</color>
+    <color name="privacy_secondary">#55627A</color>
+
+    <color name="privacy_background">#F6F7FB</color>
+    <color name="privacy_surface">#FFFFFFFF</color>
+    <color name="privacy_surface_variant">#EEF1F7</color>
+    <color name="privacy_outline">#D8DCE6</color>
+
+    <color name="privacy_text_primary">#1B1D24</color>
+    <color name="privacy_text_secondary">#646A78</color>
+
+    <color name="risk_low">#16784B</color>
+    <color name="risk_low_container">#DDF6E9</color>
+    <color name="risk_medium">#A85B00</color>
+    <color name="risk_medium_container">#FFF0D8</color>
+    <color name="risk_high">#B3261E</color>
+    <color name="risk_high_container">#FFE3E0</color>
 </resources>

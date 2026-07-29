@@ -1,8 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.PrivacyAwarePermissionSystem" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/privacy_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/privacy_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/privacy_primary_dark</item>
+        <item name="colorSecondary">@color/privacy_secondary</item>
+        <item name="android:colorBackground">@color/privacy_background</item>
+        <item name="colorSurface">@color/privacy_surface</item>
+        <item name="colorOutline">@color/privacy_outline</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/privacy_background</item>
+        <item name="android:navigationBarColor">@color/privacy_background</item>
     </style>
 
     <style name="Theme.PrivacyAwarePermissionSystem" parent="Base.Theme.PrivacyAwarePermissionSystem" />
