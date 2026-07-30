@@ -1,58 +1,76 @@
 package com.example.privacyawarepermissionsystem;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.Intent;
 
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-
+    private TextView txtEmptyHistory;
     private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_history);
 
-        recyclerView = findViewById(R.id.recyclerHistory);
+        recyclerView =
+                findViewById(R.id.recyclerHistory);
+        txtEmptyHistory =
+                findViewById(R.id.txtEmptyHistory);
 
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper =
+                new DatabaseHelper(
+                        getApplicationContext());
 
+        loadApplications();
+    }
+
+    private void loadApplications() {
         List<AppInfo> appList =
                 databaseHelper.getAllApps();
 
-        HistoryAdapter adapter = new HistoryAdapter(
+        boolean isEmpty =
+                appList.isEmpty();
 
-                appList,
+        txtEmptyHistory.setVisibility(
+                isEmpty
+                        ? View.VISIBLE
+                        : View.GONE);
 
-                app -> {
+        recyclerView.setVisibility(
+                isEmpty
+                        ? View.GONE
+                        : View.VISIBLE);
 
-                    Intent intent = new Intent(
-                            HistoryActivity.this,
-                            DetailActivity.class
-                    );
+        HistoryAdapter adapter =
+                new HistoryAdapter(
+                        appList,
+                        app -> {
+                            Intent intent =
+                                    new Intent(
+                                            HistoryActivity.this,
+                                            DetailActivity.class);
 
-                    intent.putExtra("selectedApp", app);
+                            intent.putExtra(
+                                    "selectedApp",
+                                    app);
 
-                    startActivity(intent);
-
-                }
-
-        );
+                            startActivity(intent);
+                        });
 
         recyclerView.setAdapter(adapter);
-
     }
-
 }

@@ -22,16 +22,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Select an application to view its complete privacy report."
+        android:text="Applications are ordered from the lowest privacy score to the highest."
         android:textColor="@color/privacy_text_secondary"
         android:textSize="14sp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerHistory"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:paddingBottom="24dp"/>
+        android:layout_marginTop="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/txtEmptyHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="24dp"
+            android:text="No scan results are available.\nReturn to the home screen and run a scan first."
+            android:textColor="@color/privacy_text_secondary"
+            android:textSize="15sp"
+            android:visibility="gone"/>
+    </FrameLayout>
 </LinearLayout>

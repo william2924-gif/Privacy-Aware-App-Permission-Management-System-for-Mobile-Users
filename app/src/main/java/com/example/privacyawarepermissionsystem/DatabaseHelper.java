@@ -11,7 +11,8 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "privacy_permission.db";
+    private static final String DATABASE_NAME =
+            "privacy_permission.db";
     private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_APPS = "apps";
@@ -20,22 +21,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_APP_NAME = "app_name";
     public static final String COLUMN_PACKAGE_NAME = "package_name";
     public static final String COLUMN_PERMISSIONS = "permissions";
-    public static final String COLUMN_PERMISSION_COUNT = "permission_count";
-    public static final String COLUMN_PRIVACY_SCORE = "privacy_score";
-    public static final String COLUMN_RISK_LEVEL = "risk_level";
-    public static final String COLUMN_SCAN_TIME = "scan_time";
-
+    public static final String COLUMN_PERMISSION_COUNT =
+            "permission_count";
+    public static final String COLUMN_PRIVACY_SCORE =
+            "privacy_score";
+    public static final String COLUMN_RISK_LEVEL =
+            "risk_level";
+    public static final String COLUMN_SCAN_TIME =
+            "scan_time";
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(
+                context,
+                DATABASE_NAME,
+                null,
+                DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         String createTable =
                 "CREATE TABLE " + TABLE_APPS + " (" +
-                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_APP_NAME + " TEXT, " +
                         COLUMN_PACKAGE_NAME + " TEXT, " +
                         COLUMN_PERMISSIONS + " TEXT, " +
@@ -49,298 +57,295 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(
+            SQLiteDatabase db,
+            int oldVersion,
+            int newVersion) {
 
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_APPS);
+        db.execSQL(
+                "DROP TABLE IF EXISTS " + TABLE_APPS);
         onCreate(db);
-
     }
 
-    // Insert one application
     public void insertApp(AppInfo app) {
+        SQLiteDatabase db = getWritableDatabase();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.insert(
+                    TABLE_APPS,
+                    null,
+                    createValues(app));
+        } finally {
+            db.close();
+        }
+    }
 
+    /**
+     * Replaces the complete scan snapshot in one transaction.
+     * The database is never left half-updated if insertion fails.
+     */
+    public void replaceAllApps(List<AppInfo> applications) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            db.delete(TABLE_APPS, null, null);
+
+            for (AppInfo app : applications) {
+                db.insertOrThrow(
+                        TABLE_APPS,
+                        null,
+                        createValues(app));
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+
+    private ContentValues createValues(AppInfo app) {
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_APP_NAME, app.getAppName());
-        values.put(COLUMN_PACKAGE_NAME, app.getPackageName());
-        values.put(COLUMN_PERMISSIONS, app.getPermissions());
-        values.put(COLUMN_PERMISSION_COUNT, app.getPermissionCount());
-        values.put(COLUMN_PRIVACY_SCORE, app.getPrivacyScore());
-        values.put(COLUMN_RISK_LEVEL, app.getRiskLevel());
-        values.put(COLUMN_SCAN_TIME, app.getScanTime());
+        values.put(
+                COLUMN_APP_NAME,
+                app.getAppName());
+        values.put(
+                COLUMN_PACKAGE_NAME,
+                app.getPackageName());
+        values.put(
+                COLUMN_PERMISSIONS,
+                app.getPermissions());
+        values.put(
+                COLUMN_PERMISSION_COUNT,
+                app.getPermissionCount());
+        values.put(
+                COLUMN_PRIVACY_SCORE,
+                app.getPrivacyScore());
+        values.put(
+                COLUMN_RISK_LEVEL,
+                app.getRiskLevel());
+        values.put(
+                COLUMN_SCAN_TIME,
+                app.getScanTime());
 
-        db.insert(TABLE_APPS, null, values);
-
-        db.close();
-
+        return values;
     }
 
-    // Get all applications
     public List<AppInfo> getAllApps() {
-
         List<AppInfo> appList = new ArrayList<>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + TABLE_APPS +
-                        " ORDER BY id DESC",
-                null
-        );
+                        " ORDER BY " +
+                        COLUMN_PRIVACY_SCORE +
+                        " ASC, " +
+                        COLUMN_APP_NAME +
+                        " COLLATE NOCASE ASC",
+                null);
 
-        if (cursor.moveToFirst()) {
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    AppInfo app = new AppInfo(
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_APP_NAME)),
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_PACKAGE_NAME)),
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_PERMISSIONS)),
+                            cursor.getInt(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_PERMISSION_COUNT)),
+                            cursor.getInt(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_PRIVACY_SCORE)),
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_RISK_LEVEL)),
+                            cursor.getString(
+                                    cursor.getColumnIndexOrThrow(
+                                            COLUMN_SCAN_TIME)));
 
-            do {
-
-                AppInfo app = new AppInfo(
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APP_NAME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PACKAGE_NAME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PERMISSIONS)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PERMISSION_COUNT)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRIVACY_SCORE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RISK_LEVEL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SCAN_TIME))
-                );
-
-                appList.add(app);
-
-            } while (cursor.moveToNext());
-
+                    appList.add(app);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+            db.close();
         }
-
-        cursor.close();
-
-        db.close();
 
         return appList;
-
     }
 
-    // Delete all records
     public void clearDatabase() {
+        SQLiteDatabase db = getWritableDatabase();
 
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        db.delete(TABLE_APPS, null, null);
-
-        db.close();
-
+        try {
+            db.delete(TABLE_APPS, null, null);
+        } finally {
+            db.close();
+        }
     }
 
-    // Count total apps
     public int getTotalApps() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT COUNT(*) FROM " + TABLE_APPS,
-                null
-        );
+                null);
 
-        cursor.moveToFirst();
-
-        int count = cursor.getInt(0);
-
-        cursor.close();
-
-        db.close();
-
-        return count;
-
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            return 0;
+        } finally {
+            cursor.close();
+            db.close();
+        }
     }
 
-    /**
-     * Returns the number of high-risk applications.
-     */
     public int getHighRiskCount() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT COUNT(*) FROM " + TABLE_APPS +
-                        " WHERE " + COLUMN_RISK_LEVEL + " = ?",
-                new String[]{"High"}
-        );
-
-        int count = 0;
-
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0);
-        }
-
-        cursor.close();
-        db.close();
-
-        return count;
+        return getRiskCount("High");
     }
 
-    /**
-     * Returns the number of medium-risk applications.
-     */
     public int getMediumRiskCount() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT COUNT(*) FROM " + TABLE_APPS +
-                        " WHERE " + COLUMN_RISK_LEVEL + " = ?",
-                new String[]{"Medium"}
-        );
-
-        int count = 0;
-
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0);
-        }
-
-        cursor.close();
-        db.close();
-
-        return count;
+        return getRiskCount("Medium");
     }
 
-    /**
-     * Returns the number of low-risk applications.
-     */
     public int getLowRiskCount() {
+        return getRiskCount("Low");
+    }
 
-        SQLiteDatabase db = this.getReadableDatabase();
-
+    private int getRiskCount(String riskLevel) {
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT COUNT(*) FROM " + TABLE_APPS +
-                        " WHERE " + COLUMN_RISK_LEVEL + " = ?",
-                new String[]{"Low"}
-        );
+                        " WHERE " +
+                        COLUMN_RISK_LEVEL +
+                        " = ?",
+                new String[]{riskLevel});
 
-        int count = 0;
-
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0);
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            return 0;
+        } finally {
+            cursor.close();
+            db.close();
         }
-
-        cursor.close();
-        db.close();
-
-        return count;
     }
 
     /**
-     * Determines the overall privacy status.
+     * Uses the same score thresholds as individual applications.
+     * This avoids reporting Low when a small device sample contains
+     * several high-risk applications.
      */
     public String getOverallStatus() {
+        if (getTotalApps() == 0) {
+            return "Not Scanned";
+        }
 
-        int high = getHighRiskCount();
-        int medium = getMediumRiskCount();
+        int averageScore =
+                getAveragePrivacyScore();
 
-        if (high >= 10) {
-            return "High";
-        } else if (medium >= 10) {
-            return "Medium";
-        } else {
+        if (averageScore >= 80) {
             return "Low";
         }
+
+        if (averageScore >= 50) {
+            return "Medium";
+        }
+
+        return "High";
     }
 
-    /**
-     * Generates a privacy recommendation.
-     */
     public String getRecommendation() {
-
         String status = getOverallStatus();
 
         switch (status) {
+            case "Not Scanned":
+                return "Run an application scan to generate a device privacy summary.";
 
             case "High":
-                return "Several applications request sensitive permissions. Review High Risk apps and disable unnecessary permissions.";
+                return "The average privacy score is low. Review high-risk applications and disable unnecessary permissions.";
 
             case "Medium":
-                return "Some applications request sensitive permissions. Check permission settings regularly.";
+                return "Some applications request sensitive access. Review permission settings regularly.";
 
             default:
-                return "Your device currently has a relatively low privacy risk. Continue reviewing permissions before installing new apps.";
+                return "The current scan indicates a relatively low privacy risk. Continue reviewing permissions after app updates.";
         }
     }
 
-    /**
-     * Returns the average privacy score.
-     */
     public int getAveragePrivacyScore() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT AVG(" + COLUMN_PRIVACY_SCORE + ") FROM " + TABLE_APPS,
-                null
-        );
+                "SELECT AVG(" +
+                        COLUMN_PRIVACY_SCORE +
+                        ") FROM " +
+                        TABLE_APPS,
+                null);
 
-        int average = 0;
-
-        if (cursor.moveToFirst()) {
-            average = cursor.getInt(0);
+        try {
+            if (cursor.moveToFirst() &&
+                    !cursor.isNull(0)) {
+                return cursor.getInt(0);
+            }
+            return 0;
+        } finally {
+            cursor.close();
+            db.close();
         }
-
-        cursor.close();
-        db.close();
-
-        return average;
     }
 
-    /**
-     * Returns the application with the highest privacy score.
-     */
     public String getHighestPrivacyScoreApp() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT " + COLUMN_APP_NAME +
-                        " FROM " + TABLE_APPS +
-                        " ORDER BY " + COLUMN_PRIVACY_SCORE +
-                        " DESC LIMIT 1",
-                null
-        );
-
-        String app = "N/A";
-
-        if (cursor.moveToFirst()) {
-            app = cursor.getString(0);
-        }
-
-        cursor.close();
-        db.close();
-
-        return app;
-
+        return getScoreExtreme(true);
     }
 
-    /**
-     * Returns the application with the lowest privacy score.
-     */
     public String getLowestPrivacyScoreApp() {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT " + COLUMN_APP_NAME +
-                        " FROM " + TABLE_APPS +
-                        " ORDER BY " + COLUMN_PRIVACY_SCORE +
-                        " ASC LIMIT 1",
-                null
-        );
-
-        String app = "N/A";
-
-        if (cursor.moveToFirst()) {
-            app = cursor.getString(0);
-        }
-
-        cursor.close();
-        db.close();
-
-        return app;
-
+        return getScoreExtreme(false);
     }
 
+    private String getScoreExtreme(boolean highest) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String direction =
+                highest ? "DESC" : "ASC";
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        COLUMN_APP_NAME +
+                        ", " +
+                        COLUMN_PRIVACY_SCORE +
+                        " FROM " +
+                        TABLE_APPS +
+                        " ORDER BY " +
+                        COLUMN_PRIVACY_SCORE +
+                        " " +
+                        direction +
+                        ", " +
+                        COLUMN_APP_NAME +
+                        " COLLATE NOCASE ASC LIMIT 1",
+                null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0) +
+                        " (" +
+                        cursor.getInt(1) +
+                        " / 100)";
+            }
+            return "N/A";
+        } finally {
+            cursor.close();
+            db.close();
+        }
+    }
 }
